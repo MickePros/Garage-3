@@ -13,8 +13,8 @@ namespace Garage_3.Extensions
                 var context = services.GetRequiredService<ApplicationDbContext>();
 
                 // Uncomment these two for a fresh database installation with SeedData.
-                await context.Database.EnsureDeletedAsync();
-                await context.Database.MigrateAsync();
+                // await context.Database.EnsureDeletedAsync();
+                // await context.Database.MigrateAsync();
 
                 try
                 {
