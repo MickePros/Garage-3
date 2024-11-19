@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Garage_3.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241118214759_SSN-to-long")]
-    partial class SSNtolong
+    [Migration("20241119005133_Column-type-changes")]
+    partial class Columntypechanges
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,9 +109,8 @@ namespace Garage_3.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -168,8 +167,8 @@ namespace Garage_3.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
+                    b.Property<double>("Size")
+                        .HasColumnType("float");
 
                     b.Property<string>("Type")
                         .IsRequired()

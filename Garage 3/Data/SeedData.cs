@@ -18,16 +18,64 @@ namespace Garage_3.Data
             userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 
             var roleNames = new[] { "user", "Admin" };
-            var adminEmail = "admin@admin.com";
-            var userEmail = "user@user.com";
+            var adminEmail = "admin@group6.com";
+            var userEmail = "user@group6.com";
 
             await AddRolesAsync(roleNames);
 
-            var admin = await AddAccountAsync(adminEmail, "Admin", "Adminsson", 9012240011, "Pa55w.rd");
-            var user = await AddAccountAsync(userEmail, "User", "Usersson", 9012240011, "Pa55w.rd");
+            var admin = await AddAccountAsync(adminEmail, "Admin", "Adminsson", 9012240011, "Group6!");
+            var user = await AddAccountAsync(userEmail, "User", "Usersson", 9012240011, "Group6!");
 
             await AddUserToRoleAsync(admin, "Admin");
             await AddUserToRoleAsync(user, "User");
+
+            var vehicleTypes = GenerateTypes();
+            await context.AddRangeAsync(vehicleTypes);
+
+            var vehicles = GenerateVehicles(user, vehicleTypes);
+            await context.AddRangeAsync(vehicles);
+
+            var parkingSpots = GenerateSpots();
+            await context.AddRangeAsync(parkingSpots);
+
+            await context.SaveChangesAsync();
+        }
+
+        private static IEnumerable<ParkingSpot> GenerateSpots()
+        {
+            var parkingSpots = new List<ParkingSpot>();
+            parkingSpots.Add(new ParkingSpot { Status = 2 });
+            parkingSpots.Add(new ParkingSpot { Status = 0 });
+            parkingSpots.Add(new ParkingSpot { Status = 1 });
+            parkingSpots.Add(new ParkingSpot { Status = 0 });
+            parkingSpots.Add(new ParkingSpot { Status = 2 });
+
+            return parkingSpots;
+        }
+
+        private static IEnumerable<Vehicle> GenerateVehicles(ApplicationUser user, IEnumerable<VehicleType> vehicleTypes)
+        {
+            var vehicles = new List<Vehicle>();
+            int pk = 123;
+            foreach (var vehicleType in vehicleTypes)
+            {
+                vehicles.Add(new Vehicle { RegNr = $"ABC-{pk}", Brand = "Volvo", Model = "EX90", Color = "Red", Wheels = 4, Arrival = DateTime.Now, VehicleType = vehicleType, VehicleTypeId = vehicleType.Id, ApplicationUser = user, ApplicationUserId = user.Id });
+                pk++;
+            }
+
+            return vehicles;
+        }
+
+        private static IEnumerable<VehicleType> GenerateTypes()
+        {
+            var vehicleTypes = new List<VehicleType>();
+            vehicleTypes.Add(new VehicleType { Type = "Car", Size = 1 });
+            vehicleTypes.Add(new VehicleType { Type = "Truck", Size = 2 });
+            vehicleTypes.Add(new VehicleType { Type = "Motorcycle", Size = 0.3 });
+            vehicleTypes.Add(new VehicleType { Type = "Boat", Size = 3 });
+            vehicleTypes.Add(new VehicleType { Type = "Airplane", Size = 3 });
+
+            return vehicleTypes;
         }
 
         private static async Task AddUserToRoleAsync(ApplicationUser user, string roleName)

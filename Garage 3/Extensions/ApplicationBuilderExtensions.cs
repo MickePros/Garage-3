@@ -1,4 +1,5 @@
 ﻿using Garage_3.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Garage_3.Extensions
 {
@@ -11,13 +12,17 @@ namespace Garage_3.Extensions
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<ApplicationDbContext>();
 
+                // Uncomment these two for a fresh database installation with SeedData.
+                // await context.Database.EnsureDeletedAsync();
+                // await context.Database.MigrateAsync();
+
                 try
                 {
                     await SeedData.Init(context, services);
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    throw;
                 }
             }
             return app;

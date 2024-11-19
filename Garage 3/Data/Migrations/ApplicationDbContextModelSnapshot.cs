@@ -106,9 +106,8 @@ namespace Garage_3.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -165,8 +164,8 @@ namespace Garage_3.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
+                    b.Property<double>("Size")
+                        .HasColumnType("float");
 
                     b.Property<string>("Type")
                         .IsRequired()
