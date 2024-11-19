@@ -1,5 +1,6 @@
 ﻿using Garage_3.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace Garage_3.Data
 {
@@ -35,20 +36,24 @@ namespace Garage_3.Data
             var vehicles = GenerateVehicles(user, vehicleTypes);
             await context.AddRangeAsync(vehicles);
 
-            var parkingSpots = GenerateSpots();
+            var parkingSpots = GenerateSpots(vehicles);
             await context.AddRangeAsync(parkingSpots);
 
             await context.SaveChangesAsync();
         }
 
-        private static IEnumerable<ParkingSpot> GenerateSpots()
+        private static IEnumerable<ParkingSpot> GenerateSpots(IEnumerable<Vehicle> vehicles)
         {
             var parkingSpots = new List<ParkingSpot>();
-            parkingSpots.Add(new ParkingSpot { Status = 2 });
-            parkingSpots.Add(new ParkingSpot { Status = 0 });
-            parkingSpots.Add(new ParkingSpot { Status = 1 });
-            parkingSpots.Add(new ParkingSpot { Status = 0 });
-            parkingSpots.Add(new ParkingSpot { Status = 2 });
+            foreach (var vehicle in vehicles)
+            {
+                var status = 0;
+                var list = new List<Vehicle>();
+                list.Add(vehicle);
+                if (vehicle.VehicleType.Type == "Motorcycle") {status = 1;}
+                else if (vehicle.VehicleType.Type == "Car" || vehicle.VehicleType.Type == "Airplane"){status = 2;}
+                parkingSpots.Add(new ParkingSpot { Status = status, Vehicles = list.ToList() });
+            }
 
             return parkingSpots;
         }
