@@ -9,6 +9,6 @@ namespace Garage_3.Models
         public string FirstName { get; set; }
         [Display(Name = "Last name")]
         public string LastName { get; set; }
-        public int SSN { get; set; }
+        public long SSN { get; set; }
     }
 }

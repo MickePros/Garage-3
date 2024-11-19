@@ -1,4 +1,5 @@
 using Garage_3.Data;
+using Garage_3.Extensions;
 using Garage_3.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +8,7 @@ namespace Garage_3
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,8 @@ namespace Garage_3
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            await app.SeedDataAsync();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
