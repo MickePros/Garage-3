@@ -111,7 +111,7 @@ namespace Garage_3.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ParkingSpot");
+                    b.ToTable("ParkingSpot", (string)null);
                 });
 
             modelBuilder.Entity("Garage_3.Models.Vehicle", b =>
@@ -153,7 +153,7 @@ namespace Garage_3.Data.Migrations
 
                     b.HasIndex("VehicleTypeId");
 
-                    b.ToTable("Vehicles");
+                    b.ToTable("Vehicles", (string)null);
                 });
 
             modelBuilder.Entity("Garage_3.Models.VehicleType", b =>
@@ -173,7 +173,7 @@ namespace Garage_3.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VehicleType");
+                    b.ToTable("VehicleType", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -325,7 +325,7 @@ namespace Garage_3.Data.Migrations
 
                     b.HasIndex("VehiclesRegNr");
 
-                    b.ToTable("ParkingSpotVehicle");
+                    b.ToTable("ParkingSpotVehicle", (string)null);
                 });
 
             modelBuilder.Entity("Garage_3.Models.Vehicle", b =>

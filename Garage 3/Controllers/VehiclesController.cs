@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Garage_3.Data;
 using Garage_3.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Garage_3.Controllers
 {
     public class VehiclesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private UserManager<ApplicationUser> _userManager;
 
-        public VehiclesController(ApplicationDbContext context)
+        public VehiclesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Vehicles
@@ -165,6 +168,61 @@ namespace Garage_3.Controllers
         private bool VehicleExists(string id)
         {
             return _context.Vehicles.Any(e => e.RegNr == id);
+        }
+
+        public async Task<IActionResult> Users()
+        {
+            var model = _context.Users.Select(u => new UsersViewModel
+            {
+                Id = u.Id,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                Email = u.Email,
+                Vehicles = u.Vehicles.Count(),
+                ParkingFee = 0
+            });
+
+            return View(await model.ToListAsync());
+        }
+
+        public async Task<IActionResult> UserFilter(string freetext)
+        {
+            var model = _context.Users.Select(u => new UsersViewModel
+            {
+                Id = u.Id,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                Email = u.Email,
+                Vehicles = u.Vehicles.Count(),
+                ParkingFee = 0
+            });
+
+            model = string.IsNullOrWhiteSpace(freetext) ?
+                model :
+                model.Where(u => u.FirstName.Contains(freetext)
+                || u.LastName.Contains(freetext)
+                || u.Email.Contains(freetext)
+                );
+
+            return View(nameof(Users), await model.ToListAsync());
+        }
+
+        public async Task<IActionResult> UserDetails(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.Users
+                .Include(u => u.Vehicles)
+                .FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
         }
     }
 }

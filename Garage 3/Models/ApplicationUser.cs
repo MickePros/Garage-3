@@ -10,5 +10,8 @@ namespace Garage_3.Models
         [Display(Name = "Last name")]
         public string LastName { get; set; }
         public long SSN { get; set; }
+
+        // Navigational Property
+        public ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
     }
 }

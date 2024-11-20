@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Garage_3.Models.UsersViewModel>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1>Users</h1>
+
+<form asp-action="UserFilter" method="get">
+    <div class="input-group mb-3">
+        <input type="text" id="filter-freetext" class="form-control" name="freetext" placeholder="Search for @Html.DisplayNameFor(model => model.FirstName) or @Html.DisplayNameFor(model => model.LastName) or @Html.DisplayNameFor(model => model.Email)" />
+        <div class="input-group-append" id="filter-submit">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vehicles)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParkingFee)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vehicles)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParkingFee)
+            </td>
+            <td>
+                <a asp-action="UserDetails" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
