@@ -13,9 +13,10 @@ namespace Garage_3.Models
         public string Color { get; set; }
         public int Wheels { get; set; }
         [Display(Name = "Registration date")]
+
         public DateTime Registration { get; private set; }
         [Display(Name = "Parking date")]
-        public DateTime Arrival { get; set; }
+        public DateTime? Arrival { get; set; }
 
         // Foreign Keys
         [ForeignKey("VehicleType")]

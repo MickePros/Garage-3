@@ -7,7 +7,8 @@ namespace Garage_3.Models.ViewModels
     {
         public string Owner { get; set; }
 
-        public string Membership {  get; set; }
+       // Additional part for extra functionality
+       //public string Membership {  get; set; }
 
         public string Type { get; set; }
         public string RegNr { get; set; }
@@ -15,7 +16,7 @@ namespace Garage_3.Models.ViewModels
         public int ParkingSpotId { get; set; }
 
         [ReadOnly(true)]
-        public DateTime Arrival { get; private set; }
+        public DateTime Arrival { get; set; }
 
         [ReadOnly(true)]
         public TimeSpan ParkLenght => DateTime.Now - Arrival;

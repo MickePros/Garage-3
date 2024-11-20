@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Garage_3.Data;
 using Garage_3.Models;
+using Garage_3.Models.ViewModels;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Text.RegularExpressions;
 
 namespace Garage_3.Controllers
 {
@@ -165,6 +168,52 @@ namespace Garage_3.Controllers
         private bool VehicleExists(string id)
         {
             return _context.Vehicles.Any(e => e.RegNr == id);
+        }
+
+
+        public async Task<IActionResult> ParkedVehiclesOverview(string regNr, string? type)
+        {
+            //Get vehicles with arrival time set
+            var query = _context.Vehicles
+                .Include(v => v.ApplicationUser)
+                .Include(v => v.VehicleType)
+                .Include(v => v.ParkingSpots)
+                .Where(v => v.Arrival.HasValue);
+
+            if (!query.Any()) return NotFound();
+
+            // Apply filters if provided
+            if (!string.IsNullOrWhiteSpace(regNr))
+            {
+                query = query.Where(v => v.RegNr.Contains(regNr));
+            }
+            if (!string.IsNullOrWhiteSpace(type))
+            {
+                query = query.Where(v => v.VehicleType.Type == type);
+            }
+
+            var vehicles = await query.ToListAsync();
+
+            //Return empty list if no vehicles were found (used in view)
+            if (!vehicles.Any()) return View(new List<ParkedVehicleOverwievViewModel>()); 
+
+            var viewModels = vehicles.Select(vehicle => new ParkedVehicleOverwievViewModel
+            {
+                Owner = vehicle.ApplicationUser.FirstName + " " + vehicle.ApplicationUser.LastName,
+                // Membership = vehicle.ApplicationUser.MembershipStatus, // Uncomment if this exists
+                Type = vehicle.VehicleType.Type,
+                RegNr = vehicle.RegNr,
+                ParkingSpotId = vehicle.ParkingSpots
+                    .FirstOrDefault(spot => spot.Vehicles.Any(v => v.RegNr == vehicle.RegNr)).Id,
+                Arrival = (DateTime)vehicle.Arrival
+            }).ToList();
+
+            return View(viewModels);
+        }
+
+        public async Task<IActionResult> Filter(string regNr, string? type)
+        {
+            return RedirectToAction(nameof(ParkedVehiclesOverview), new { regNr, type });
         }
     }
 }
