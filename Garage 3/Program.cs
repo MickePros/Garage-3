@@ -50,6 +50,21 @@ namespace Garage_3
                 name: "default",
                 pattern: "{controller=Vehicles}/{action=Index}/{id?}");
             app.MapRazorPages();
+            // Skapa roller
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                string[] roleNames = { "Admin", "Member" };
+                foreach (var roleName in roleNames)
+                {
+                    var roleExist = await roleManager.RoleExistsAsync(roleName);
+                    if (!roleExist)
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(roleName));
+                    }
+                }
+            }
+
 
             app.Run();
         }
