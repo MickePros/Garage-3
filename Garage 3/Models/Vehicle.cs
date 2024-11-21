@@ -25,6 +25,9 @@ namespace Garage_3.Models
         public VehicleType VehicleType { get; set; }
         [ForeignKey("ApplicationUser")]
         public string ApplicationUserId { get; set; }
+
+        //Used for displaying full name in Index
+        [Display(Name = "Full name")]
         public ApplicationUser ApplicationUser { get; set; }
 
         // Navigational Property
