@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Garage_3.Models.ViewModels.ParkedVehicleOverwievViewModel>
+
+<h1>Parked Vehicles</h1>
+
+<form asp-action="Filter" method="get">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="type" placeholder="Search by @Html.DisplayNameFor(model => model.Type)" />
+       
+        <input type="text" id="filter-regnr" class="form-control" name="regNr" placeholder="Search by registration" />
+
+        <div class="input-group-append" id="filter-submit">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+ @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="6" class="text-center">No vehicles found matching the search criteria.</td>
+            </tr>
+        }
+        else {
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Owner</th>
+            <th>Vehicle Type</th>
+            <th>License Plate</th>
+            <th>Parking Spot</th>
+            <th>Arrival</th>
+            <th>Time Parked</th>
+        </tr>
+    </thead>
+    <tbody>
+       
+        @foreach (var vehicle in Model)
+        {
+            <tr>
+                <td>@vehicle.Owner</td>
+                <td>@vehicle.Type</td>
+                <td>@vehicle.RegNr</td>
+                <td>@vehicle.ParkingSpotId</td>
+                <td>@vehicle.Arrival</td>
+                <td>@vehicle.ParkLengthFormatted</td>
+            </tr>
+        }
+    </tbody>
+</table>
+        }
