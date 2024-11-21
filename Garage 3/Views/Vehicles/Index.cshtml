@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Home</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="RegisterVehicle">Register new vehicle</a>
 </p>
 <table class="table">
     <thead>
@@ -61,10 +61,10 @@
                 @Html.DisplayFor(modelItem => item.Arrival)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.VehicleType.Id)
+                @Html.DisplayFor(modelItem => item.VehicleType.Type)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.Id)
+                @Html.DisplayFor(modelItem => item.ApplicationUser.FullName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.RegNr">Edit</a> |
