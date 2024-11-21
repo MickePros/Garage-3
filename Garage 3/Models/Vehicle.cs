@@ -21,6 +21,7 @@ namespace Garage_3.Models
         // Foreign Keys
         [ForeignKey("VehicleType")]
         public int VehicleTypeId { get; set; }
+        [Display(Name = "Vehicle type")]
         public VehicleType VehicleType { get; set; }
         [ForeignKey("ApplicationUser")]
         public string ApplicationUserId { get; set; }
