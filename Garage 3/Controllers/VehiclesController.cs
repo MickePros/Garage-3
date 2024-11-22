@@ -16,6 +16,10 @@ namespace Garage_3.Controllers
     public class VehiclesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        [TempData]
+        public string Message { get; set; }
+        [TempData]
+        public string Alert { get; set; }
 
         public VehiclesController(ApplicationDbContext context)
         {

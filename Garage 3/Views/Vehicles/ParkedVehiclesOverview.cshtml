@@ -2,6 +2,8 @@
 
 <h1>Parked Vehicles</h1>
 
+<partial name="_GarageFeedbackPartial" />
+
 <form asp-action="Filter" method="get">
     <div class="input-group mb-3">
         <input type="text" class="form-control" name="type" placeholder="Search by @Html.DisplayNameFor(model => model.Type)" />
