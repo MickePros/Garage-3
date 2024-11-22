@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Garage_3.Models.ViewModels
 {
@@ -7,7 +8,7 @@ namespace Garage_3.Models.ViewModels
     {
         [Display(Name = "License plate")]
 
-        //Add remote attribute when Robert is done
+        [Remote("CheckRegNr", "Vehicles")]
         public string RegNr { get; set; }
         public string Brand { get; set; }
         public string Model { get; set; }

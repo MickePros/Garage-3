@@ -373,5 +373,17 @@ namespace Garage_3.Controllers
         {
             return RedirectToAction(nameof(ParkedVehiclesOverview), new { regNr, type });
         }
+
+        // Remote: Check if RegNr exists in DB
+        public ActionResult CheckRegNr(string regNr)
+        {
+            var vehicle = _context.Vehicles
+                .FirstOrDefault(v => v.RegNr == regNr);
+            if (vehicle != null)
+            {
+                return Json($"{regNr} is already parked in the garage.");
+            }
+            return Json(true);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Garage_3.Models
@@ -7,6 +8,7 @@ namespace Garage_3.Models
     {
         [Key]
         [Display(Name = "License plate")]
+        [Remote("CheckRegNr", "Vehicles")]
         public string RegNr { get; set; }
         public string Brand { get; set; }
         public string Model { get; set; }

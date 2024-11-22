@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Garage_3.Models.ViewModels
 {
     public class EditVehicleViewModel
     {
-        [Display(Name = "License plate")]
-
-        //Add remote attribute when Robert is done
         public string RegNr { get; set; }
         public string Brand { get; set; }
         public string Model { get; set; }
