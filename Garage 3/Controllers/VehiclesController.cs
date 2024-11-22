@@ -92,6 +92,8 @@ namespace Garage_3.Controllers
             {
                 _context.Add(vehicleType);
                 await _context.SaveChangesAsync();
+                Alert = "success";
+                Message = $"{vehicleType.Type} successfully added.";
                 return RedirectToAction(nameof(Index));
             }
             return View(vehicleType);
