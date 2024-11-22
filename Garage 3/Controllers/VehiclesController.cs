@@ -219,19 +219,32 @@ namespace Garage_3.Controllers
             return RedirectToAction(nameof(ParkedVehiclesOverview), new { regNr, type });
         }
 
-        public async Task<IActionResult> Users()
+        public async Task<IActionResult> Users(string? freetext = null)
         {
-            var model = _context.Users.Select(u => new UsersViewModel
+            var model = await _context.Users.Select(u => new UsersViewModel
             {
                 Id = u.Id,
                 FirstName = u.FirstName,
                 LastName = u.LastName,
                 Email = u.Email,
                 Vehicles = u.Vehicles.Count(),
-                ParkingFee = 0
-            });
+                Vehiclelist = u.Vehicles.ToList()
+            }).ToListAsync();
 
-            return View(await model.ToListAsync());
+            foreach (var user in model)
+            {
+                var parkLength = new TimeSpan(0, 0, 0, 0);
+                foreach (var vehicle in user.Vehiclelist)
+                {
+                    if (vehicle.Arrival != null)
+                    {
+                        parkLength = parkLength + (DateTime.Now - (DateTime)vehicle.Arrival);
+                    }
+                }
+                user.ParkingFee = (parkLength.Hours + parkLength.Days * 24) * 100;
+            }
+
+            return View(model);
         }
 
         public async Task<IActionResult> UserFilter(string freetext)
@@ -253,7 +266,20 @@ namespace Garage_3.Controllers
                 || u.Email.Contains(freetext)
                 );
 
-            return View(nameof(Users), await model.ToListAsync());
+            foreach (var user in model)
+            {
+                var parkLength = new TimeSpan(0, 0, 0, 0);
+                foreach (var vehicle in user.Vehiclelist)
+                {
+                    if (vehicle.Arrival != null)
+                    {
+                        parkLength = parkLength + (DateTime.Now - (DateTime)vehicle.Arrival);
+                    }
+                }
+                user.ParkingFee = (parkLength.Hours + parkLength.Days * 24) * 100;
+            }
+
+            return View(nameof(Users), model);
         }
 
         public async Task<IActionResult> UserDetails(string id)

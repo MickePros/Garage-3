@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Garage_3.Models
+namespace Garage_3.Models.ViewModels
 {
     public class UsersViewModel
     {
@@ -14,5 +14,6 @@ namespace Garage_3.Models
         public int Vehicles { get; set; }
         [Display(Name = "Parking fee")]
         public double ParkingFee { get; set; }
+        public List<Vehicle> Vehiclelist = new List<Vehicle>();
     }
 }
