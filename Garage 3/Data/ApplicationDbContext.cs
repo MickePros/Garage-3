@@ -13,5 +13,6 @@ namespace Garage_3.Data
         }
 
         public DbSet<Vehicle> Vehicles { get; set; } = default!;
+        public DbSet<Garage_3.Models.VehicleType> VehicleType { get; set; } = default!;
     }
 }
