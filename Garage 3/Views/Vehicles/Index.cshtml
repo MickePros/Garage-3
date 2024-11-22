@@ -6,9 +6,7 @@
 
 <h1>Home</h1>
 
-<p>
-    <a asp-action="RegisterVehicle">Register new vehicle</a>
-</p>
+<a asp-action="RegisterVehicle" class="btn btn-primary mb-3 mt-2">Register vehicle </a>
 <table class="table">
     <thead>
         <tr>
@@ -67,9 +65,9 @@
                 @Html.DisplayFor(modelItem => item.ApplicationUser.FullName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.RegNr">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RegNr">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RegNr">Delete</a>
+                <a class="btn btn-secondary" asp-action="EditVehicle" asp-route-id="@item.RegNr">Edit</a>
+                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.RegNr">Details</a>
+                <a class="btn btn-danger"  asp-action="Delete" asp-route-id="@item.RegNr">Delete</a>
             </td>
         </tr>
 }
