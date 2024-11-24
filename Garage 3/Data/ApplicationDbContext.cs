@@ -13,7 +13,7 @@ namespace Garage_3.Data
         {
         }
 
+        public DbSet<VehicleType> VehicleTypes { get; set; } = default!;
         public DbSet<Vehicle> Vehicles { get; set; } = default!;
-        public DbSet<Garage_3.Models.ViewModels.ParkingSpotsOverviewViewModel> ParkingSpotsOverview { get; set; } = default!;
     }
 }
