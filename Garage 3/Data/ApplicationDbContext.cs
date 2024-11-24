@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Garage_3.Models.ViewModels;
 
 namespace Garage_3.Data
 {
@@ -13,5 +14,6 @@ namespace Garage_3.Data
         }
 
         public DbSet<Vehicle> Vehicles { get; set; } = default!;
+        public DbSet<Garage_3.Models.ViewModels.ParkingSpotsOverviewViewModel> ParkingSpotsOverview { get; set; } = default!;
     }
 }

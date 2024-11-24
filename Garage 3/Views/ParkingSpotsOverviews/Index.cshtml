@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Garage_3.Models.ViewModels.ParkingSpotsOverviewViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RegNr)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsOccupied)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VehicleOwner)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VehicleType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegNr)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsOccupied)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehicleOwner)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehicleType)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ParkingSpotId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ParkingSpotId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ParkingSpotId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

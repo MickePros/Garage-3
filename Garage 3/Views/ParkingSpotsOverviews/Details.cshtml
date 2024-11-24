@@ -1,0 +1,42 @@
+﻿@model Garage_3.Models.ViewModels.ParkingSpotsOverviewViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ParkingSpotsOverview</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RegNr)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RegNr)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsOccupied)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsOccupied)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.VehicleOwner)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.VehicleOwner)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.VehicleType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.VehicleType)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.ParkingSpotId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
