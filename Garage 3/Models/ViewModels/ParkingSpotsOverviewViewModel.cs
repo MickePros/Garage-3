@@ -4,14 +4,19 @@ namespace Garage_3.Models.ViewModels
 {
     public class ParkingSpotsOverviewViewModel
     {
-        [Key]
+        [Display(Name = "Parking spot")]
             public int ParkingSpotId { get; set; }
-            public string RegNr { get; set; }
- 
-            public bool IsOccupied { get; set; }
+        [Display(Name = "Registration number")]
+        public string RegNr { get; set; }
+        [Display(Name = "Status")]
+        public bool IsOccupied { get; set; }
+        [Display(Name = "Vehicle owner")]
+        public string VehicleOwner { get; set; }
+        [Display(Name = "Vehicle type")]
+        public string VehicleType { get; set; }
 
-            public string VehicleOwner { get; set; }
-            public string VehicleType { get; set; }
+        public ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
+        public ICollection<ParkingSpot> ParkingSpots { get; set;} = new List<ParkingSpot>();
         
     }
 }
