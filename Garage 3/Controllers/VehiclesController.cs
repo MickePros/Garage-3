@@ -15,6 +15,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Linq.Expressions;
 
 namespace Garage_3.Controllers
 {
@@ -22,6 +23,10 @@ namespace Garage_3.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        [TempData]
+        public string Message { get; set; }
+        [TempData]
+        public string Alert { get; set; }
 
         public VehiclesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
@@ -288,6 +293,51 @@ namespace Garage_3.Controllers
             return View(editVehicleViewModel);
         }
 
+
+        public async Task<IActionResult> ParkingspotsOverview(int id = -1, int status = -1)
+        {
+            var model = _context.ParkingSpot.Select(p => new ParkingSpotOverviewViewModel
+            {
+                Id = p.Id,
+                Status = p.Status,
+                Vehicles = p.Vehicles
+            });
+
+            model = (id <= 0) ?
+                model :
+                model.Where(p => p.Id == id);
+
+            model = (status < 0) ?
+                model :
+                model.Where(p => p.Status == status);
+
+            return View(await model.ToListAsync());
+        }
+
+        public async Task<IActionResult> ParkingFilter(int id, int status = -1)
+        {
+            return RedirectToAction(nameof(ParkingspotsOverview), new { id, status });
+        }
+
+        public IActionResult AddParkingSpot()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddParkingSpot([Bind("Status")] ParkingSpot parkingSpot)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(parkingSpot);
+                await _context.SaveChangesAsync();
+                Alert = "success";
+                Message = $"Parking spot successfully added.";
+                return RedirectToAction(nameof(ParkingspotsOverview));
+            }
+            return View(parkingSpot);
+        }
 
         // GET: Vehicles/Delete/5
         public async Task<IActionResult> Delete(string id)

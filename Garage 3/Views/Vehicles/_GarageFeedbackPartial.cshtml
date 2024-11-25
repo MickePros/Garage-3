@@ -1,0 +1,6 @@
+﻿@{
+    if (TempData.Peek("Message") != null)
+    {
+        <div class='alert alert-@TempData.Peek("Alert")' role="alert"> @TempData.Peek("Message") </div>
+    }
+}
