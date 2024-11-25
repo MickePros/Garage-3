@@ -10,6 +10,7 @@ using Garage_3.Models;
 using Garage_3.Models.ViewModels;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Text.RegularExpressions;
+using System.Linq.Expressions;
 
 namespace Garage_3.Controllers
 {
@@ -132,6 +133,51 @@ namespace Garage_3.Controllers
             ViewData["ApplicationUserId"] = new SelectList(_context.Users, "Id", "Id", vehicle.ApplicationUserId);
             ViewData["VehicleTypeId"] = new SelectList(_context.Set<VehicleType>(), "Id", "Id", vehicle.VehicleTypeId);
             return View(vehicle);
+        }
+
+        public async Task<IActionResult> ParkingspotsOverview(int id = -1, int status = -1)
+        {
+            var model = _context.ParkingSpot.Select(p => new ParkingSpotOverviewViewModel
+            {
+                Id = p.Id,
+                Status = p.Status,
+                Vehicles = p.Vehicles
+            });
+
+            model = (id <= 0) ?
+                model :
+                model.Where(p => p.Id == id);
+
+            model = (status < 0) ?
+                model :
+                model.Where(p => p.Status == status);
+
+            return View(await model.ToListAsync());
+        }
+
+        public async Task<IActionResult> ParkingFilter(int id, int status = -1)
+        {
+            return RedirectToAction(nameof(ParkingspotsOverview), new { id, status });
+        }
+
+        public IActionResult AddParkingSpot()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddParkingSpot([Bind("Status")] ParkingSpot parkingSpot)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(parkingSpot);
+                await _context.SaveChangesAsync();
+                Alert = "success";
+                Message = $"Parking spot successfully added.";
+                return RedirectToAction(nameof(ParkingspotsOverview));
+            }
+            return View(parkingSpot);
         }
 
         // GET: Vehicles/Delete/5
