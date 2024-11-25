@@ -21,19 +21,22 @@ namespace Garage_3.Data
             var roleNames = new[] { "user", "Admin" };
             var adminEmail = "admin@group6.com";
             var userEmail = "user@group6.com";
+            var dudeEmail = "dude@group6.com";
 
             await AddRolesAsync(roleNames);
 
             var admin = await AddAccountAsync(adminEmail, "Admin", "Adminsson", 9012240011, "Group6!");
             var user = await AddAccountAsync(userEmail, "User", "Usersson", 9012240011, "Group6!");
+            var dude = await AddAccountAsync(dudeEmail, "Dude", "Dudesson", 9012240011, "Group6!");
 
             await AddUserToRoleAsync(admin, "Admin");
             await AddUserToRoleAsync(user, "User");
+            await AddUserToRoleAsync(dude, "User");
 
             var vehicleTypes = GenerateTypes();
             await context.AddRangeAsync(vehicleTypes);
 
-            var vehicles = GenerateVehicles(user, vehicleTypes);
+            var vehicles = GenerateVehicles(user, dude, vehicleTypes);
             await context.AddRangeAsync(vehicles);
 
             var parkingSpots = GenerateSpots(vehicles);
@@ -51,20 +54,31 @@ namespace Garage_3.Data
                 var list = new List<Vehicle>();
                 list.Add(vehicle);
                 if (vehicle.VehicleType.Type == "Motorcycle") {status = 1;}
-                else if (vehicle.VehicleType.Type == "Car" || vehicle.VehicleType.Type == "Airplane"){status = 2;}
+                else {status = 2;}
                 parkingSpots.Add(new ParkingSpot { Status = status, Vehicles = list.ToList() });
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                parkingSpots.Add(new ParkingSpot { Status = 0 });
             }
 
             return parkingSpots;
         }
 
-        private static IEnumerable<Vehicle> GenerateVehicles(ApplicationUser user, IEnumerable<VehicleType> vehicleTypes)
+        private static IEnumerable<Vehicle> GenerateVehicles(ApplicationUser user, ApplicationUser dude, IEnumerable<VehicleType> vehicleTypes)
         {
             var vehicles = new List<Vehicle>();
             int pk = 123;
             foreach (var vehicleType in vehicleTypes)
             {
-                vehicles.Add(new Vehicle { RegNr = $"ABC-{pk}", Brand = "Volvo", Model = "EX90", Color = "Red", Wheels = 4, Arrival = DateTime.Now, VehicleType = vehicleType, VehicleTypeId = vehicleType.Id, ApplicationUser = user, ApplicationUserId = user.Id });
+                if (pk == 124)
+                {
+                    vehicles.Add(new Vehicle { RegNr = $"ABC-{pk}", Brand = "Volvo", Model = "EX90", Color = "Red", Wheels = 4, Arrival = DateTime.Now, VehicleType = vehicleType, VehicleTypeId = vehicleType.Id, ApplicationUser = dude, ApplicationUserId = user.Id });
+                }
+                else
+                {
+                    vehicles.Add(new Vehicle { RegNr = $"ABC-{pk}", Brand = "Volvo", Model = "EX90", Color = "Red", Wheels = 4, Arrival = DateTime.Now, VehicleType = vehicleType, VehicleTypeId = vehicleType.Id, ApplicationUser = user, ApplicationUserId = user.Id });
+                }
                 pk++;
             }
 
