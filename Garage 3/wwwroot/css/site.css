@@ -20,3 +20,21 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.ps {
+    height: 15px;
+    width: 15px;
+}
+.ps.ps-0 {
+    background-color: forestgreen;
+}
+.ps.ps-1 {
+    background-color: orange;
+}
+.ps.ps-2 {
+    background-color: red;
+}
+
+.park-2 {
+    display: none;
+}

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Garage_3.Models
@@ -7,6 +9,7 @@ namespace Garage_3.Models
     {
         [Key]
         [Display(Name = "License plate")]
+        [Remote("CheckRegNr", "Vehicles")]
         public string RegNr { get; set; }
         public string Brand { get; set; }
         public string Model { get; set; }
@@ -21,9 +24,13 @@ namespace Garage_3.Models
         // Foreign Keys
         [ForeignKey("VehicleType")]
         public int VehicleTypeId { get; set; }
+        [Display(Name = "Vehicle type")]
         public VehicleType VehicleType { get; set; }
         [ForeignKey("ApplicationUser")]
         public string ApplicationUserId { get; set; }
+
+        //Used for displaying full name in Index
+        [Display(Name = "Full name")]
         public ApplicationUser ApplicationUser { get; set; }
 
         // Navigational Property
