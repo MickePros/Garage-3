@@ -1,27 +1,68 @@
-﻿[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult>
-    Register(RegisterViewModel model, string returnUrl = null)
-    {
-    if (ModelState.IsValid)
-    {
-    var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
+﻿@model Garage_3.Models.RegisterViewModel
 
-    // Skapa användare i systemet
-    var result = await _userManager.CreateAsync(user, model.Password);
-    if (result.Succeeded)
-    {
-    // Logga in användaren
-    await _signInManager.SignInAsync(user, isPersistent: false);
-    return LocalRedirect(returnUrl ?? Url.Action("Index", "Home")); // Skicka med ReturnUrl
-    }
+@{
+    ViewData["Title"] = "Register";
+}
 
-    foreach (var error in result.Errors)
-    {
-    ModelState.AddModelError(string.Empty, error.Description);
-    }
-    }
+<h2>@ViewData["Title"]</h2>
 
-    // Returnera till registreringsvyn om det är några fel
-    return View(model);
-    }
+<form asp-action="Register" method="post">
+    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <!-- Användarnamn -->
+    <div class="form-group">
+        <label asp-for="Input.UserName" class="control-label"></label>
+        <input asp-for="Input.UserName" class="form-control" />
+        <span asp-validation-for="Input.UserName" class="text-danger"></span>
+    </div>
+
+    <!-- E-post -->
+    <div class="form-group">
+        <label asp-for="Input.Email" class="control-label"></label>
+        <input asp-for="Input.Email" class="form-control" />
+        <span asp-validation-for="Input.Email" class="text-danger"></span>
+    </div>
+
+    <!-- Lösenord -->
+    <div class="form-group">
+        <label asp-for="Input.Password" class="control-label"></label>
+        <input asp-for="Input.Password" type="password" class="form-control" />
+        <span asp-validation-for="Input.Password" class="text-danger"></span>
+    </div>
+
+    <!-- Bekräfta Lösenord -->
+    <div class="form-group">
+        <label asp-for="Input.ConfirmPassword" class="control-label"></label>
+        <input asp-for="Input.ConfirmPassword" type="password" class="form-control" />
+        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+    </div>
+
+    <!-- Förnamn -->
+    <div class="form-group">
+        <label asp-for="Input.FirstName" class="control-label"></label>
+        <input asp-for="Input.FirstName" class="form-control" />
+        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+    </div>
+
+    <!-- Efternamn -->
+    <div class="form-group">
+        <label asp-for="Input.LastName" class="control-label"></label>
+        <input asp-for="Input.LastName" class="form-control" />
+        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+    </div>
+
+    <!-- Personnummer (SSN) -->
+    <div class="form-group">
+        <label asp-for="Input.SSN" class="control-label"></label>
+        <input asp-for="Input.SSN" class="form-control" />
+        <span asp-validation-for="Input.SSN" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Registrera</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
