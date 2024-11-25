@@ -13,5 +13,8 @@ namespace Garage_3.Models
 
         [Display(Name = "Full name")]
         public string FullName => FirstName + ' ' + LastName;
+
+        // Navigational Property
+        public ICollection<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
     }
 }

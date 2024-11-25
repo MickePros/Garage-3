@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Garage_3.Data;
 using Garage_3.Models;
+using Microsoft.AspNetCore.Identity;
 using Garage_3.Models.ViewModels;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Text.RegularExpressions;
@@ -384,6 +385,66 @@ namespace Garage_3.Controllers
                 return Json($"{regNr} is already parked in the garage.");
             }
             return Json(true);
+        }
+
+        public async Task<IActionResult> Users(string? freetext = null)
+        {
+            var model = _context.Users.Select(u => new UsersViewModel
+            {
+                Id = u.Id,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                Email = u.Email,
+                Vehicles = u.Vehicles.Count(),
+                Vehiclelist = u.Vehicles.ToList()
+            });
+
+            model = string.IsNullOrWhiteSpace(freetext) ?
+                model :
+                model.Where(u => u.FirstName.Contains(freetext)
+                || u.LastName.Contains(freetext)
+                || u.Email.Contains(freetext)
+                );
+
+            var userModel = await model.ToListAsync();
+
+            foreach (var user in userModel)
+            {
+                var parkLength = new TimeSpan(0, 0, 0, 0);
+                foreach (var vehicle in user.Vehiclelist)
+                {
+                    if (vehicle.Arrival != null)
+                    {
+                        parkLength = parkLength + (DateTime.Now - (DateTime)vehicle.Arrival);
+                    }
+                }
+                user.ParkingFee = (parkLength.Hours + parkLength.Days * 24) * 100;
+            }
+
+            return View(nameof(Users), userModel);
+        }
+
+        public async Task<IActionResult> UserFilter(string freetext)
+        {
+            return RedirectToAction(nameof(Users), new { freetext });
+        }
+
+        public async Task<IActionResult> UserDetails(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _context.Users
+                .Include(u => u.Vehicles)
+                .FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
         }
     }
 }
