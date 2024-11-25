@@ -91,10 +91,7 @@ namespace Garage_3.Controllers
         public IActionResult RegisterVehicle()
         {
             // Fetch distinct VehicleTypes from Vehicles
-            var vehicleTypes = _context.Vehicles
-                .Select(v => v.VehicleType)
-                .Distinct()
-                .ToList();
+            var vehicleTypes = _context.VehicleTypes.ToList();
 
             ViewData["VehicleTypes"] = new SelectList(vehicleTypes, "Type", "Type"); 
             return View();
@@ -141,6 +138,26 @@ namespace Garage_3.Controllers
             return View(viewModel);
         }
 
+
+        public IActionResult AddVehicleType()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddVehicleType([Bind("Type,Size")] VehicleType vehicleType)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(vehicleType);
+                await _context.SaveChangesAsync();
+                Alert = "success";
+                Message = $"{vehicleType.Type} successfully added.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(vehicleType);
+        }
 
         // GET: Vehicles/Edit/5
         public async Task<IActionResult> Edit(string id)
